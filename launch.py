@@ -45,9 +45,6 @@ if os.environ["MODS_PRESET"] != "":
 if os.environ["MODS_LOCAL"] == "true" and os.path.exists("mods"):
     mods.extend(local.mods("mods"))
 
-if os.environ["ARMA_CDLC"] != "":
-    mods.extend(os.environ["ARMA_CDLC"].replace(" ", "").split(";"))
-
 launch = "{} -limitFPS={} -world={} {} {}".format(
     os.environ["ARMA_BINARY"],
     os.environ["ARMA_LIMITFPS"],
@@ -99,5 +96,9 @@ launch += ' -port={} -name="{}" -profiles="/arma3/configs/profiles"'.format(
 if os.path.exists("servermods"):
     launch += mod_param("serverMod", local.mods("servermods"))
 
+if os.environ["ARMA_CDLC"] != "":
+    for i in (os.environ["ARMA_CDLC"].split(";")):
+        launch += ' -mod={}'.format(i)
+    
 print("LAUNCHING ARMA SERVER WITH", launch, flush=True)
 os.system(launch)
